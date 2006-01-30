@@ -1,0 +1,10 @@
+<?xml version='1.0'?>		
+
+<xc:Partition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:xc="http://xdaq.web.cern.ch/xdaq/xsd/2004/XMLConfiguration-30">
+
+    	<xc:Context url="http://lxplus068.cern.ch:1972">
+                <xc:Application class="RPCWebClient" id="23" network="local"/>
+		<xc:Module>/afs/cern.ch/user/s/segoni/scratch0/CMSSW_2006-01-25/lib/slc3_ia32_gcc323/libDQMRPCMonitorClient.so</xc:Module>
+        </xc:Context>
+
+</xc:Partition>
