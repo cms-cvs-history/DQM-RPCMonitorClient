@@ -1,6 +1,6 @@
 <MESUBSCRIPTION>
-        <ME get="yes">*FED_/RMB_*/UnexistingME*</ME>
-        <ME get="yes">*FED_/RMB_*/NumberOfChannels*</ME>
+        <ME get="yes">*</ME>
+        <ME get="no">*FED_/RMB_*/NumberOfChannels*</ME>
         <ME get="no">*FED_/RMB_*/Channels_*</ME>
         <ME get="no">*FED_*/RMB_*/CHN_*/NumberOfLBs_FED*_RMB*_CHN*</ME>
 </MESUBSCRIPTION>
