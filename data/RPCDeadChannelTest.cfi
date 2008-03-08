@@ -1,0 +1,21 @@
+module rpcdeadchannel = RPCDeadChannelTest{
+
+	untracked bool writeHisto = false
+	untracked string outputFile = "/afs/cern.ch/user/c/cimmino/scratch0/CMSSW/CMSSW_1_8_0_pre5/src/DQM/RPCMonitorClient/test/RPCDeadChannelTest.root"
+      	
+	#untracked bool runningStandalone = true 
+        #untracked uint32 diagnosticPrescale = 100
+
+	untracked string qtList = "QualityTests.xml"
+  	untracked bool getQualityTestsFromFile = true
+	
+	#Names of the quality tests: they must match those specified in "qtList"	untracked string OccTestName = "DeadChannel_0"
+
+ #      untracked bool retrieveMeFromFile = false
+ # 	untracked string MeRootFile = "MyMe.root"
+
+ untracked bool getReferenceFile = false
+	untracked string referenceFileName = "reference.txt"
+
+
+}	
