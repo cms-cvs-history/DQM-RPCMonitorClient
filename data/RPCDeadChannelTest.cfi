@@ -7,9 +7,7 @@ module rpcdeadchannel = RPCDeadChannelTest{
 
         untracked uint32 diagnosticPrescale = 1000
 
-       untracked uint32 diagnosticPrescale = 1000
-
-
+   
 	untracked string qtList = "QualityTests.xml"
   	untracked bool getQualityTestsFromFile = true
 	
