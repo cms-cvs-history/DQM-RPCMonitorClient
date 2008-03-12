@@ -4,7 +4,7 @@ module rpcdeadchannel = RPCDeadChannelTest{
 	untracked string outputFile = "/afs/cern.ch/user/c/cimmino/scratch0/CMSSW/CMSSW_1_8_0_pre5/src/DQM/RPCMonitorClient/test/RPCDeadChannelTest.root"
       	
 	#untracked bool runningStandalone = true 
-        #untracked uint32 diagnosticPrescale = 1000
+       untracked uint32 diagnosticPrescale = 1000
 
 	untracked string qtList = "QualityTests.xml"
   	untracked bool getQualityTestsFromFile = true
