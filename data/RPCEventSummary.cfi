@@ -1,0 +1,11 @@
+module rpcEventSummary = RPCEventSummary{
+
+ #get event info folder (remenber: this module must run after EventInfo!!!!
+  untracked string EventInfoPath ="RPC/EventInfo"
+
+  untracked string RPCPrefixDir = "RPC/RecHits"
+
+  untracked bool EnableDetectorSegmentation = true
+  
+
+}	
