@@ -10,6 +10,9 @@ module rpcqualitytests = RPCQualityTests{
 	untracked string qtList = "RPCQualityTests.xml"
   	untracked bool getQualityTestsFromFile = true
 	
+	untracked vstring QualityTestList ={"DeadChannelTest",
+ 				            "MultiplicityTest"}
+
 #       untracked bool retrieveMeFromFile = false
 # 	untracked string MeRootFile = "MyMe.root"
 
