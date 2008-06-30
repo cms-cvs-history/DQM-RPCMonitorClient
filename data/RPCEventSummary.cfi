@@ -5,7 +5,7 @@ module rpcEventSummary = RPCEventSummary{
 
   untracked string RPCPrefixDir = "RPC/RecHits"
 
-  untracked bool EnableDetectorSegmentation = true
+  untracked int32 PrescaleFactor = 100
   
 
 }	
