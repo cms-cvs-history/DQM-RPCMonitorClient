@@ -6,8 +6,8 @@
  * *
  *  DQM Test Client
  *
- *  $Date: 2008/12/15 16:28:30 $
- *  $Revision: 1.6 $
+ *  $Date: 2008/10/30 17:33:39 $
+ *  $Revision: 1.5 $
  *  \author 
  *   
  */
@@ -25,12 +25,15 @@
 #include "DQMServices/Core/interface/MonitorElement.h"
 #include "DQMServices/Core/interface/DQMStore.h"
 
-#include <DataFormats/MuonDetId/interface/RPCDetId.h>
+#include "Geometry/RPCGeometry/interface/RPCGeometry.h"
+#include "Geometry/CommonDetUnit/interface/GeomDet.h"
 
-#include <map>
 #include <memory>
 #include <string>
 #include <vector>
+
+class RPCDetId;
+
 
 class RPCDeadChannelTest:public edm::EDAnalyzer{
 
@@ -66,17 +69,16 @@ public:
 
  protected:
   void fillDeadChannelHisto(const std::map<int,std::map<int,std::pair<float,float> > > & sumMap, int region);
-  void CalculateDeadChannelPercentage(RPCDetId & detId, MonitorElement * myMe,  edm::EventSetup const& iSetup);
-
   
- private:
+private:
+
   int prescaleFactor_;
   std::string globalFolder_,prefixDir_;
   std::vector<MonitorElement *>  myOccupancyMe_;
   std::vector<RPCDetId>   myDetIds_;
   std::vector<std::string>    myRollNames_;
   DQMStore* dbe_;
-  std:: map<int, std::map< int ,  std::pair<float,float> > >  barrelMap_, endcapMap_;
+
   
 };
 

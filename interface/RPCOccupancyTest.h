@@ -6,8 +6,8 @@
  * *
  *  DQM Event Summary module for RPCs
  *
- *  $Date: 2008/12/04 20:17:20 $
- *  $Revision: 1.1 $
+ *  $Date: 2008/11/12 12:26:53 $
+ *  $Revision: 1.7 $
  *  \author Anna Cimmino
  *   
  */
@@ -54,12 +54,14 @@ public:
   /// End Lumi Block
   void endLuminosityBlock(edm::LuminosityBlock const& lumiSeg, edm::EventSetup const& c);
  
- protected:
- void OccupancyDist();
+
+
 
  private:
   
   std::string prefixDir_;
+
+
 
   int prescaleFactor_;
   bool verbose_;
