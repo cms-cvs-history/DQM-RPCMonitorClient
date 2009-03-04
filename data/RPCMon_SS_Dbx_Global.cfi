@@ -1,6 +1,0 @@
-module rpcAfterPulse = RPCMon_SS_Dbx_Global{
-
-  untracked string GlobalHistogramsFolder = "RPC/RecHits/SummaryHistograms"
-  untracked bool SaveRootFile =  false 
-  untracked string RootFileName = "out.root"
-}	
