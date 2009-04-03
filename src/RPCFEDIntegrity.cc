@@ -55,44 +55,47 @@ void RPCFEDIntegrity::beginLuminosityBlock(LuminosityBlock const& lumiSeg, Event
 
 void RPCFEDIntegrity::analyze(const Event& iEvent, const EventSetup& c) {
 
-  //get hold of raw data counts
-  Handle<RPCRawDataCounts> rawCounts;
-  iEvent.getByType( rawCounts);
+//   //get hold of raw data counts
+//   Handle<RPCRawDataCounts> rawCounts;
+//   iEvent.getByType( rawCounts);
 
-  const RPCRawDataCounts * aCounts = rawCounts.product();
-  //  const RPCRawDataCounts * theCounts += *aCounts;
+//   const RPCRawDataCounts * aCounts = rawCounts.product();
+//   //  const RPCRawDataCounts * theCounts += *aCounts;
 
-  vector<double> v1;
-  map<int,double> fedOccupancy;
+//   vector<double> v1;
+//   map<int,double> fedOccupancy;
 
-  MonitorElement * me;
+   MonitorElement * me;
 
-  //loop  on all FEDS
-  for (int fedId=minFEDNum_ ;fedId<maxFEDNum_+1;fedId++) {
-    v1.clear();
-    aCounts->recordTypeVector(fedId,v1); 
+//   //loop  on all FEDS
+//   for (int fedId=minFEDNum_ ;fedId<maxFEDNum_+1;fedId++) {
+//     v1.clear();
+//     aCounts->recordTypeVector(fedId,v1); 
 
-    if(fedOccupancy.find(fedId)== fedOccupancy.end() || fedOccupancy.size()==0) fedOccupancy[fedId]=0;
+//     if(fedOccupancy.find(fedId)== fedOccupancy.end() || fedOccupancy.size()==0) fedOccupancy[fedId]=0;
     
-    //loop on errors
-    for (unsigned int err = 1 ; err<v1.size(); err +=2){//get onlz even elements of the vector
-       fedOccupancy[fedId] += v1[err];
+//     //loop on errors
+//     for (unsigned int err = 1 ; err<v1.size(); err +=2){//get onlz even elements of the vector
+//        fedOccupancy[fedId] += v1[err];
 
-      if(err-1!=0 && err-1 <= FATAL_LIMIT){
-	me= dbe_->get(prefixDir_+"/FEDIntegrity/FEDFatal");
-	me ->Fill(fedId,v1[err]);
-      }
-      else if (err-1!=0){
-	me= dbe_->get(prefixDir_+"/FEDIntegrity/FEDNonFatal");
-	me ->Fill(fedId,v1[err]);
-      }
+//       if(err-1!=0 && err-1 <= FATAL_LIMIT){
+// 	me= dbe_->get(prefixDir_+"/FEDIntegrity/FEDFatal");
+// 	me ->Fill(fedId,v1[err]);
+//       }
+//       else if (err-1!=0){
+// 	me= dbe_->get(prefixDir_+"/FEDIntegrity/FEDNonFatal");
+// 	me ->Fill(fedId,v1[err]);
+//       }
 
-    }//end loop o errors
+//     }//end loop o errors
 
-      me = dbe_->get(prefixDir_+"/FEDIntegrity/FEDEntries");
+//
 
-      if(me!=0) me->Fill(fedId, fedOccupancy[fedId] );
-  }//end loop on all FEDs
+       me = dbe_->get(prefixDir_+"/FEDIntegrity/FEDEntries");
+       for (int fedId = minFEDNum_; fedId<=  maxFEDNum_; fedId++){
+	 if(me!=0) me->Fill(fedId);
+       }
+//   }//end loop on all FEDs
 }
 
 void RPCFEDIntegrity::endLuminosityBlock(LuminosityBlock const& lumiSeg, EventSetup const& iSetup) {}
