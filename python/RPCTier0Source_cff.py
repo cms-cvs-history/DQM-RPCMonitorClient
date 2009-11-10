@@ -20,4 +20,6 @@ rpcEventInfo = cms.EDFilter("DQMEventInfo",
 )
 
 
-rpcTier0Source = cms.Sequence(rpcdigidqm*rpcEventInfo*rpcFEDIntegrity*rpcMonitorRaw*rpcMonitorLinkSynchro)
+
+rpcTier0Source = cms.Sequence(rpcdigidqm*rpcEventInfo*rpcFEDIntegrity)
+
