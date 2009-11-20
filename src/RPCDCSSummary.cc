@@ -31,7 +31,7 @@ void RPCDCSSummary::beginJob(const EventSetup& setup){
 
  edm::eventsetup::EventSetupRecordKey recordKey(edm::eventsetup::EventSetupRecordKey::TypeTag::findType("RunInfoRcd"));
 
- int defaultValue = 1;
+ defaultValue = 1;
 
  if(0 != setup.find( recordKey ) ) {
     defaultValue = -1;

@@ -27,6 +27,9 @@ private:
   virtual void analyze(const edm::Event& event, const edm::EventSetup& setup);
   virtual void endLuminosityBlock(const edm::LuminosityBlock& lumi, const  edm::EventSetup& setup);
   virtual void endJob() ;
+
+  int defaultValue;
+
   
   DQMStore *theDbe;  
   MonitorElement*    DCSMap_;

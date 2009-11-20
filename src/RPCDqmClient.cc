@@ -98,12 +98,11 @@ void  RPCDqmClient::beginRun(const Run& r, const EventSetup& c){
 	
 	//Get Occupancy ME for roll
 	RPCGeomServ RPCname(detId);	   
-	RPCBookFolderStructure *  folderStr = new RPCBookFolderStructure();
 
 	//loop on clients
 	for( unsigned int cl = 0; cl<clientModules_.size(); cl++ ){
 
- 	  MonitorElement * myMe = dbe_->get(prefixDir_+"/"+ folderStr->folderStructure(detId)+"/"+clientHisto_[cl]+ "_"+RPCname.name()); 
+ 	  MonitorElement * myMe = dbe_->get(prefixDir_+"/"+  RPCBookFolderStructure::folderStructure(detId)+"/"+clientHisto_[cl]+ "_"+RPCname.name()); 
 
 	  if (!myMe || find(myMeVect.begin(), myMeVect.end(), myMe)!=myMeVect.end())continue;
 

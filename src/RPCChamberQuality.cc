@@ -7,7 +7,6 @@
 #include <sstream>
 #include <map>
 #include <DQM/RPCMonitorClient/interface/RPCChamberQuality.h>
-#include "DQM/RPCMonitorDigi/interface/RPCBookFolderStructure.h"
 #include "DQM/RPCMonitorDigi/interface/utils.h"
 
 // Framework
@@ -172,7 +171,6 @@ void RPCChamberQuality::endLuminosityBlock(LuminosityBlock const& lumiSeg, Event
     MonitorElement * RCQD=NULL;         // Monitoring Element RPC Chamber Quality Distr (RCQD)
      
    	    
-    // RPCBookFolderStructure *  folderStr = new RPCBookFolderStructure();
     stringstream mme;
     MonitorElement * myMe=NULL;
     MonitorElement * CLS=NULL;
@@ -334,7 +332,6 @@ void RPCChamberQuality::endLuminosityBlock(LuminosityBlock const& lumiSeg, Event
 	    dead=0;
 	    
 	    if (meDEAD) dead = meDEAD->getBinContent(x,y);
-	    else cout<<"not found ME"<<endl;
 	    
 	    if(dead>=0.8) RCQ -> setBinContent(x,y,6);
 	    else if (dead>=0.33 && dead<0.8) RCQ->setBinContent(x,y,5);

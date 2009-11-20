@@ -63,7 +63,10 @@ void RPCFEDIntegrity::analyze(const Event& iEvent, const EventSetup& c) {
   
   //get hold of raw data counts
   Handle<RPCRawDataCounts> rawCounts;
+  
+  try {
   iEvent.getByType (rawCounts);
+  }catch(...){ return; }
 
   const RPCRawDataCounts  theCounts = (*rawCounts.product());
 
@@ -100,26 +103,28 @@ void RPCFEDIntegrity::analyze(const Event& iEvent, const EventSetup& c) {
  }
   readoutErrors_ = myReadoutErrors;
  
-
-
   sort(changedFEDs.begin(),changedFEDs.end() );
   changedFEDs.resize(   unique(changedFEDs.begin(),changedFEDs.end()) - changedFEDs.begin() );
 
   for(unsigned int fed =  0 ; fed<changedFEDs.size(); fed++){
-      fedMe_[Entries] ->Fill(changedFEDs[fed]);
+    if(changedFEDs[fed]< minFEDNum_  || changedFEDs[fed]> maxFEDNum_ ) continue;
+    fedMe_[Entries] ->Fill(changedFEDs[fed]);
   }
 
   sort(fatalFEDs.begin(),fatalFEDs.end() );
- fatalFEDs.resize(  unique(fatalFEDs.begin(),fatalFEDs.end())-fatalFEDs.begin());
+  fatalFEDs.resize(  unique(fatalFEDs.begin(),fatalFEDs.end())-fatalFEDs.begin());
   
   for(unsigned int fed =  0 ; fed<fatalFEDs.size(); fed++){
+    if(fatalFEDs[fed]< minFEDNum_  || fatalFEDs[fed]> maxFEDNum_ ) continue;
+
     fedMe_[Fatal] ->Fill(fatalFEDs[fed]);
   }
 	
   sort(nonfatalFEDs.begin(),nonfatalFEDs.end() );
-nonfatalFEDs.resize(  unique(nonfatalFEDs.begin(),nonfatalFEDs.end())-nonfatalFEDs.begin());
+  nonfatalFEDs.resize(  unique(nonfatalFEDs.begin(),nonfatalFEDs.end())-nonfatalFEDs.begin());
   
   for(unsigned int fed =  0 ; fed<nonfatalFEDs.size(); fed++){
+    if(nonfatalFEDs[fed]< minFEDNum_  || nonfatalFEDs[fed]> maxFEDNum_ ) continue;  
     fedMe_[NonFatal] ->Fill(nonfatalFEDs[fed]);
   }
   

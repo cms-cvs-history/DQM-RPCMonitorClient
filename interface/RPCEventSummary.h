@@ -6,8 +6,8 @@
  * *
  *  DQM Event Summary module for RPCs
  *
- *  $Date: 2009/05/12 12:58:50 $
- *  $Revision: 1.12 $
+ *  $Date: 2009/09/28 21:56:41 $
+ *  $Revision: 1.13 $
  *  \author Anna Cimmino
  *   
  */
@@ -67,7 +67,7 @@ public:
  
   int nLumiSegs_;
   std::string globalFolder_;
-
+  int defaultValue;
 
   std::pair<int, int> FEDRange_;
   int numberOfDisks_;  
