@@ -58,8 +58,8 @@ namespace rpcdqmclient{
 	
 	  //Get Occupancy ME for roll
 	  RPCGeomServ RPCname(detId);	   
-	  RPCBookFolderStructure *  folderStr = new RPCBookFolderStructure();
-	  MonitorElement * myMe = dbe->get(prefixDir+"/"+ folderStr->folderStructure(detId)+"/"+MEName+ "_"+RPCname.name()); 
+	  //	  RPCBookFolderStructure *  folderStr = new RPCBookFolderStructure();
+	  MonitorElement * myMe = dbe->get(prefixDir+"/"+ RPCBookFolderStructure::folderStructure(detId) +"/"+MEName+ "_"+RPCname.name()); 
 	  if (!myMe)continue;
 
 	  myMeVect_.push_back(myMe);
