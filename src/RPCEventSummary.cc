@@ -52,16 +52,16 @@ void RPCEventSummary::beginRun(const Run& r, const EventSetup& c){
 
  edm::eventsetup::EventSetupRecordKey recordKey(edm::eventsetup::EventSetupRecordKey::TypeTag::findType("RunInfoRcd"));
 
- int defaultValue = 1;
+ defaultValue = 1;
 
   if(0 != c.find( recordKey ) ) {
     defaultValue = -1;
-
+   
     //get fed summary information
     ESHandle<RunInfo> sumFED;
     c.get<RunInfoRcd>().get(sumFED);    
     vector<int> FedsInIds= sumFED->m_fed_in;   
-    int f = 0;
+    unsigned int f = 0;
    bool flag = false;
     while(!flag && f < FedsInIds.size()) {
       int fedID=FedsInIds[f];
@@ -187,6 +187,7 @@ void RPCEventSummary::endLuminosityBlock(LuminosityBlock const& lumiSeg, EventSe
   MonitorElement * RPCEvents = dbe_->get(globalFolder_ +"/RPCEvents");  
   float   rpcevents = RPCEvents -> getEntries();
 
+  if( defaultValue == -1) return;
    if(!init_ && rpcevents < minimumEvents_) return;
    else if(!init_) {
      init_=true;
@@ -195,7 +196,7 @@ void RPCEventSummary::endLuminosityBlock(LuminosityBlock const& lumiSeg, EventSe
    
    if (nLumiSegs_ % prescaleFactor_ != 0 ) return;
    
-    stringstream meName;
+   stringstream meName;
    MonitorElement * myMe;
    
    meName.str("");
@@ -256,8 +257,7 @@ void RPCEventSummary::endLuminosityBlock(LuminosityBlock const& lumiSeg, EventSe
    
    
    //ENDCAPS
-   
-   
+      
    
   //Fill repor summary
    globalMe = dbe_->get(eventInfoPath_ +"/reportSummary"); 
