@@ -30,21 +30,27 @@ public:
 
 private:
   virtual void beginJob(const edm::EventSetup&) ;
+  virtual void beginRun(const edm::Run& , const edm::EventSetup& );
   virtual void beginLuminosityBlock(const edm::LuminosityBlock& , const  edm::EventSetup&);
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   virtual void endLuminosityBlock(const edm::LuminosityBlock& , const  edm::EventSetup&);
   virtual void endJob() ;
   
   DQMStore *dbe_;  
-  
+
+  int FATAL_LIMIT;  
+
   MonitorElement*  DaqFraction_;
   MonitorElement * DaqMap_;
-  MonitorElement* daqWheelFractions[5];
-  MonitorElement* daqDiskFractions[10];
+  MonitorElement* daqWheelFractions_[5];
+  MonitorElement* daqDiskFractions_[10];
 
   std::pair<int,int> FEDRange_;
 
   int  numberOfDisks_,NumberOfFeds_;
+  float FedCount_;
+
+  std::map< std::pair<int,int>, int > readoutErrors_;
  
 };
 
