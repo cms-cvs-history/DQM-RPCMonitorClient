@@ -1,6 +1,5 @@
 <TESTSCONFIGURATION>
 
-
 <QTEST name="DeadChannel_0">
 	<TYPE>DeadChannel</TYPE>	
 	<PARAM name="threshold">0</PARAM>
@@ -9,6 +8,38 @@
 	<PARAM name="useEmptyBins">1</PARAM>
 </QTEST>
 
+<QTEST name="ClusterSize_0">
+         <TYPE>MeanWithinExpected</TYPE>
+         <PARAM name="error">0.10</PARAM>
+         <PARAM name="warning">0.80</PARAM>
+         <PARAM name="mean">2.0</PARAM>
+         <PARAM name="useRMS">0</PARAM>
+         <PARAM name="useSigma">1</PARAM>
+         <PARAM name="useRange">0</PARAM>
+         <PARAM name="xmin">0.0</PARAM>
+         <PARAM name="xmax">20.0</PARAM>
+</QTEST>
+
+<QTEST name="BunchCrossing_0">
+         <TYPE>MeanWithinExpected</TYPE>
+         <PARAM name="error">0.50</PARAM>
+         <PARAM name="warning">0.90</PARAM>
+         <PARAM name="mean">2.0</PARAM>
+         <PARAM name="useRMS">0</PARAM>
+         <PARAM name="useSigma">1</PARAM>
+         <PARAM name="useRange">0</PARAM>
+         <PARAM name="xmin">-5.0</PARAM>
+         <PARAM name="xmax">5.0</PARAM>
+</QTEST>
+
+<QTEST name="FedIntegrity_FatalError">
+         <TYPE>ContentsYRange</TYPE>     
+         <PARAM name="ymin">-0.01</PARAM>
+         <PARAM name="ymax">0.01</PARAM>
+         <PARAM name="error">0.98</PARAM>
+         <PARAM name="warning">0.99</PARAM>
+         <PARAM name="useEmptyBins">1</PARAM>
+</QTEST>
 
 
 <LINK name="*/Occupancy*RB*">
@@ -19,5 +50,28 @@
 	<TestName activate="true">DeadChannel_0</TestName>
 </LINK>
 
+<LINK name="*/ClusterSize*RE*">
+	<TestName activate="true">ClusterSize_0</TestName>
+</LINK>
+
+<LINK name="*/RecHitCounter*RE*">
+	<TestName activate="true">ClusterSize_0</TestName>
+</LINK>
+
+<LINK name="*/RecHitCounter*RB*">
+	<TestName activate="true">ClusterSize_0</TestName>
+</LINK>
+
+<LINK name="*/ClusterSize*RB*">
+	<TestName activate="true">ClusterSize_0</TestName>
+</LINK>
+
+<LINK name="*/FEDFatal">
+	<TestName activate="true">FedIntegrity_FatalError</TestName>
+</LINK>
+
+<LINK name="*/BxDistribution*">
+	<TestName activate="true">BunchCrossing_0</TestName>
+</LINK>
 
 </TESTSCONFIGURATION>
