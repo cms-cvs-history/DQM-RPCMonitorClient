@@ -316,7 +316,6 @@ void RPCOccupancyTest::fillGlobalME(RPCDetId & detId, MonitorElement * myMe){
       
       }
     else if(detId.region()==1) {
-      cout<<" avoeee "<<endl;
       if(detId.ring()==3) EndCap_OccByRng -> Fill(1, normoccup);
       else EndCap_OccByRng -> Fill(2, normoccup);
     }
