@@ -51,6 +51,8 @@ public:
  
   MonitorElement * AsyMeDDisk[10];      //Left Right Asymetry 
   MonitorElement * NormOccupDDisk[10];
+  MonitorElement * Barrel_OccBySt;
+  MonitorElement * EndCap_OccByRng;
 };
 
 #endif
