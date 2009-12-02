@@ -307,7 +307,7 @@ void RPCOccupancyTest::fillGlobalME(RPCDetId & detId, MonitorElement * myMe){
     if(NormOccup)  NormOccup->setBinContent(xBin,yBin, normoccup);
     if(NormOccupD) NormOccupD->Fill(normoccup);
 
-    
+    cout<<detId.region()<<endl;
     if(detId.region()==0) {
       if(detId.station()==1 )Barrel_OccBySt -> Fill(1, normoccup);
       if(detId.station()==2 )Barrel_OccBySt -> Fill(2, normoccup);
@@ -316,11 +316,12 @@ void RPCOccupancyTest::fillGlobalME(RPCDetId & detId, MonitorElement * myMe){
       
       }
     else if(detId.region()==1) {
-      if(detId.ring==3) EndCap_OccByRng -> Fill(1, normoccup);
+      cout<<" avoeee "<<endl;
+      if(detId.ring()==3) EndCap_OccByRng -> Fill(1, normoccup);
       else EndCap_OccByRng -> Fill(2, normoccup);
     }
     else {
-      if(detId.ring==3) EndCap_OccByRng -> Fill(4, normoccup);
+      if(detId.ring()==3) EndCap_OccByRng -> Fill(4, normoccup);
       else EndCap_OccByRng -> Fill(3, normoccup);
     }
 
