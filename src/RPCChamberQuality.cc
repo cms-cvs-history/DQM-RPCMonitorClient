@@ -502,15 +502,15 @@ void RPCChamberQuality::endLuminosityBlock(LuminosityBlock const& lumiSeg, Event
     mme<<"RPC/RecHits/SummaryHistograms/RPC_System_Quality_Overview"; 
     rpcperc = dbe_->get(mme.str());
     
-    float totperc=0;
+    //    float totperc=0;
     int b_ch = 0;
     int ep_ch = 0;
     int en_ch =0;
     double perc=0;
     
-    b_ch = bq -> getEntries();
-    en_ch = enq -> getEntries();
-    ep_ch = epq -> getEntries();
+    b_ch =(int) bq -> getEntries();
+    en_ch = (int)enq -> getEntries();
+    ep_ch = (int)epq -> getEntries();
     
         
     for(int i=1; i<8; i++) {

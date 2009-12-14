@@ -53,6 +53,7 @@ public:
   MonitorElement * NormOccupDDisk[10];
   MonitorElement * Barrel_OccBySt;
   MonitorElement * EndCap_OccByRng;
+  MonitorElement * EndCap_OccByDisk ;
 };
 
 #endif
