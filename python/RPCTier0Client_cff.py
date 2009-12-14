@@ -7,6 +7,9 @@ rpcEventSummary.Tier0 = False
 
 from DQM.RPCMonitorClient.RPCDqmClient_cfi import *
 
+from DQM.RPCMonitorClient.RPCEfficiencySecondStep_cfi import *
+
+
 #from  DQM.RPCMonitorClient.RPCChamberQuality_cfi import *
 rpcChamberQuality = cms.EDAnalyzer("RPCChamberQuality")
 
@@ -15,4 +18,4 @@ qTesterRPC = cms.EDFilter("QualityTester",
     prescaleFactor = cms.untracked.int32(10)
 )
 
-rpcTier0Client = cms.Sequence(qTesterRPC*rpcdqmclient*rpcChamberQuality*rpcEventSummary)
+rpcTier0Client = cms.Sequence(qTesterRPC*rpcdqmclient*rpcChamberQuality*rpcefficiencysecond*rpcEventSummary)
