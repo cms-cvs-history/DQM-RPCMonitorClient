@@ -12,5 +12,7 @@ DEFINE_ANOTHER_FWK_MODULE(ReadMeFromFile);
 #include <DQM/RPCMonitorClient/interface/RPCDqmClient.h>
 DEFINE_ANOTHER_FWK_MODULE(RPCDqmClient);
 
+#include <DQM/RPCMonitorClient/interface/RPCEfficiencySecond.h>
+DEFINE_ANOTHER_FWK_MODULE(RPCEfficiencySecond);
 
 
