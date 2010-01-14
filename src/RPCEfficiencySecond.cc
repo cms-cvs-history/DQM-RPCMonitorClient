@@ -61,7 +61,7 @@ RPCEfficiencySecond::RPCEfficiencySecond(const edm::ParameterSet& iConfig){
  
 RPCEfficiencySecond::~RPCEfficiencySecond(){}
 
-void RPCEfficiencySecond::beginJob(const edm::EventSetup&){
+void RPCEfficiencySecond::beginJob(){
   
   dbe = edm::Service<DQMStore>().operator->();
 

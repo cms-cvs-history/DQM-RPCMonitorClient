@@ -2,8 +2,8 @@
  *
  * Class for RPC Monitoring using RPCDigi and DT and CSC Segments.
  *
- *  $Date: 2009/06/17 17:33:31 $
- *  $Revision: 1.12 $
+ *  $Date: 2009/10/07 09:33:13 $
+ *  $Revision: 1.1 $
  *
  * \author Camilo Carrillo (Uniandes)
  *
@@ -381,7 +381,7 @@ class RPCEfficiencySecond : public edm::EDAnalyzer {
 
   
  private:
-  virtual void beginJob(const edm::EventSetup&) ;
+  virtual void beginJob() ;
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   virtual void endJob() ;
   virtual void endRun(const edm::Run& , const edm::EventSetup& );
