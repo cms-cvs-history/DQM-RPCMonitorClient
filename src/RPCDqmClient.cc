@@ -58,7 +58,7 @@ RPCDqmClient::RPCDqmClient(const ParameterSet& iConfig)
 
 RPCDqmClient::~RPCDqmClient(){dbe_ = 0;}
 
-void RPCDqmClient::beginJob(const EventSetup& iSetup){
+void RPCDqmClient::beginJob(){
  LogVerbatim ("rpcdqmclient") << "[RPCDqmClient]: Begin Job";
   if (!enableDQMClients_) return;                 ;
 

@@ -38,7 +38,7 @@ RPCChamberQuality::~RPCChamberQuality(){
   dbe_=0;
 }
 
-void RPCChamberQuality::beginJob(const EventSetup& iSetup){
+void RPCChamberQuality::beginJob(){
   LogVerbatim ("rpceventsummary") << "[RPCChamberQuality]: Begin job ";
   dbe_ = Service<DQMStore>().operator->();
 }

@@ -29,7 +29,7 @@ void RPCDaqInfo::beginLuminosityBlock(const LuminosityBlock& lumiBlock, const  E
 
 void RPCDaqInfo::endLuminosityBlock(const edm::LuminosityBlock&  lumiBlock, const  edm::EventSetup& iSetup){}
 
-void RPCDaqInfo::beginJob(const EventSetup& iSetup){
+void RPCDaqInfo::beginJob(){
  LogVerbatim ("rpcdaqinfo") << "[RPCDaqInfo]: Begin job ";
  dbe_ = Service<DQMStore>().operator->();
 }
@@ -138,6 +138,8 @@ void RPCDaqInfo::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup
   try{
     iEvent.getByType (rawCounts);
   }catch(...) { return;  } 
+
+  if(!rawCounts.isValid()) return;
 
 
   const RPCRawDataCounts  theCounts = (*rawCounts.product());

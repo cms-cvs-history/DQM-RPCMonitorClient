@@ -42,7 +42,7 @@ RPCEventSummary::~RPCEventSummary(){
   dbe_=0;
 }
 
-void RPCEventSummary::beginJob(const EventSetup& iSetup){
+void RPCEventSummary::beginJob(){
  LogVerbatim ("rpceventsummary") << "[RPCEventSummary]: Begin job ";
  dbe_ = Service<DQMStore>().operator->();
 }

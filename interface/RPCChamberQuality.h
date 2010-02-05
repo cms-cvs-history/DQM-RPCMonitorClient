@@ -7,8 +7,8 @@
 **  Class RPCClusterSizeTest           **
 **  DQM Event Summary module for RPCs  **
 **                                     **
-**  $Date: 2009/03/28 02:20:07 $       **
-**  $Revision: 1.2 $                   **
+**  $Date: 2009/05/12 12:58:50 $       **
+**  $Revision: 1.3 $                   **
 **  David Lomidze                      **
 **  INFN di Napoli                     **
 **                                     **
@@ -43,7 +43,7 @@ public:
   virtual ~RPCChamberQuality();
 
   /// BeginJob
-  void beginJob(const edm::EventSetup& iSetup);
+  void beginJob();
 
   //Begin Run
    void beginRun(const edm::Run& r, const edm::EventSetup& c);

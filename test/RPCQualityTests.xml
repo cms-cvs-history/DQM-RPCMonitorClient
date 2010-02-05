@@ -54,11 +54,11 @@
 	<TestName activate="true">ClusterSize_0</TestName>
 </LINK>
 
-<LINK name="*/RecHitCounter*RE*">
+<LINK name="*/NumberOfClusters*RE*">
 	<TestName activate="true">ClusterSize_0</TestName>
 </LINK>
 
-<LINK name="*/RecHitCounter*RB*">
+<LINK name="*/NumberOfClusters*RB*">
 	<TestName activate="true">ClusterSize_0</TestName>
 </LINK>
 

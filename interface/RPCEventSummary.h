@@ -6,8 +6,8 @@
  * *
  *  DQM Event Summary module for RPCs
  *
- *  $Date: 2009/09/28 21:56:41 $
- *  $Revision: 1.13 $
+ *  $Date: 2009/11/20 10:19:05 $
+ *  $Revision: 1.13.2.1 $
  *  \author Anna Cimmino
  *   
  */
@@ -38,7 +38,7 @@ public:
   virtual ~RPCEventSummary();
 
   /// BeginJob
-  void beginJob(const edm::EventSetup& iSetup);
+  void beginJob();
 
   //Begin Run
    void beginRun(const edm::Run& r, const edm::EventSetup& c);

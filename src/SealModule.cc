@@ -39,6 +39,6 @@ DEFINE_ANOTHER_FWK_MODULE(RPCDqmClient);
 #include <DQM/RPCMonitorClient/interface/RPCChamberQuality.h>
 DEFINE_ANOTHER_FWK_MODULE(RPCChamberQuality);
 
-#include <DQM/RPCMonitorClient/interface/RPCEfficiencySecond.h>
-DEFINE_ANOTHER_FWK_MODULE(RPCEfficiencySecond);
+// #include <DQM/RPCMonitorClient/interface/RPCEfficiencySecond.h>
+// DEFINE_ANOTHER_FWK_MODULE(RPCEfficiencySecond);
 
