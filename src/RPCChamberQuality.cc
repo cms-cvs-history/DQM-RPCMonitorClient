@@ -265,7 +265,11 @@ void RPCChamberQuality::analyze(const Event& iEvent, const EventSetup& c) {}
     meName.str("");
     meName<<"RPC/RecHits/SummaryHistograms/RPCChamberQuality_Barrel"; 
     bq  = dbe_ -> get(meName.str());
-    
+
+    if(bq!=0) bq->Reset();
+    if(enq!=0) enq->Reset();
+    if(epq!=0) epq->Reset();
+	
     for (int i=-2; i<3; i++) {    
       
       meName.str("");
@@ -291,8 +295,6 @@ void RPCChamberQuality::analyze(const Event& iEvent, const EventSetup& c) {}
       mme.str("");
       mme << "RPC/RecHits/SummaryHistograms/DeadChannelFraction_Roll_vs_Sector_Wheel"<<i;
       myMe = dbe_->get(mme.str());
-	
-   
 	
       for(int x=1; x<13; x++) {
 	int roll;
@@ -351,6 +353,7 @@ void RPCChamberQuality::analyze(const Event& iEvent, const EventSetup& c) {}
 		// noisely strip !!! fill map by a number !
 		if (RCQ)  RCQ -> setBinContent(x,y, 3);
 		if (RCQD)  RCQD -> Fill(3, 1);
+		bq->Fill(3,1); 
 	      } else if(noisystrips>0) { 
 		if (RCQ)	  RCQ -> setBinContent(x,y, 3);
 		if (RCQD)	  { 
@@ -510,14 +513,17 @@ void RPCChamberQuality::analyze(const Event& iEvent, const EventSetup& c) {}
     for(int i=1; i<8; i++) {
       
            
-      perc = ((bq->getBinContent(i)) * 100)/b_ch;
+      if(b_ch != 0) perc = ((bq->getBinContent(i)) * 100)/b_ch;
       rpcperc -> setBinContent(i, 2, perc);
-      
-      perc = ((enq->getBinContent(i)) * 100)/en_ch;
-      rpcperc -> setBinContent(i, 3, perc);
+      perc = 0;
 
-      perc = ((epq->getBinContent(i)) * 100)/ep_ch;
+      if(en_ch != 0)  perc = ((enq->getBinContent(i)) * 100)/en_ch;
+      rpcperc -> setBinContent(i, 3, perc);
+      perc = 0;
+
+      if(ep_ch != 0) perc = ((epq->getBinContent(i)) * 100)/ep_ch;
       rpcperc -> setBinContent(i, 1, perc);
+      perc = 0;
     }
     
     
