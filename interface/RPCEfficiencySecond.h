@@ -2,8 +2,8 @@
  *
  * Class for RPC Monitoring using RPCDigi and DT and CSC Segments.
  *
- *  $Date: 2009/10/07 09:33:13 $
- *  $Revision: 1.1 $
+ *  $Date: 2010/01/13 15:27:43 $
+ *  $Revision: 1.2 $
  *
  * \author Camilo Carrillo (Uniandes)
  *
@@ -381,12 +381,12 @@ class RPCEfficiencySecond : public edm::EDAnalyzer {
 
   
  private:
-  virtual void beginJob() ;
+  virtual void beginRun(const edm::Run&, const edm::EventSetup& iSetup) ;
   virtual void analyze(const edm::Event&, const edm::EventSetup&);
   virtual void endJob() ;
   virtual void endRun(const edm::Run& , const edm::EventSetup& );
 
-  std::map<std::string, MonitorElement*> bookDetUnitSeg(RPCDetId & detId,int nstrips);
+  std::map<std::string, MonitorElement*> bookDetUnitSeg(RPCDetId & detId,int nstrips,std::string folder);
   std::map<int, std::map<std::string, MonitorElement*> >  meCollection;
   
   bool debug;
@@ -394,6 +394,7 @@ class RPCEfficiencySecond : public edm::EDAnalyzer {
   bool barrel;
   bool SaveFile;
   std::string NameFile;
+  std::string folderPath;
   
   DQMStore * dbe;
   
