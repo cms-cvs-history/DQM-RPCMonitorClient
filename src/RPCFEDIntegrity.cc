@@ -25,6 +25,7 @@ typedef std::map<std::pair<int, int>, int >::const_iterator IT;
 RPCFEDIntegrity::RPCFEDIntegrity(const ParameterSet& ps ) {
   LogVerbatim ("rpcfedintegrity") << "[RPCFEDIntegrity]: Constructor";
 
+  rawCountsLabel_ = ps.getUntrackedParameter<InputTag>("RPCRawCountsInputTag");
   prefixDir_ = ps.getUntrackedParameter<string>("RPCPrefixDir", "RPC");
   merge_ = ps.getUntrackedParameter<bool>("MergeRuns", false);
   minFEDNum_ =  ps.getUntrackedParameter<int>("MinimumFEDID", 790);
@@ -63,10 +64,8 @@ void RPCFEDIntegrity::analyze(const Event& iEvent, const EventSetup& c) {
   
   //get hold of raw data counts
   Handle<RPCRawDataCounts> rawCounts;
-  
-  try {
-  iEvent.getByType (rawCounts);
-  }catch(...){ return; }
+  iEvent.getByLabel (rawCountsLabel_, rawCounts);
+  if(!rawCounts.isValid()) return;
 
   const RPCRawDataCounts  theCounts = (*rawCounts.product());
 
@@ -106,6 +105,7 @@ void RPCFEDIntegrity::analyze(const Event& iEvent, const EventSetup& c) {
   sort(changedFEDs.begin(),changedFEDs.end() );
   changedFEDs.resize(   unique(changedFEDs.begin(),changedFEDs.end()) - changedFEDs.begin() );
 
+
   for(unsigned int fed =  0 ; fed<changedFEDs.size(); fed++){
     if(changedFEDs[fed]< minFEDNum_  || changedFEDs[fed]> maxFEDNum_ ) continue;
     fedMe_[Entries] ->Fill(changedFEDs[fed]);
@@ -116,7 +116,6 @@ void RPCFEDIntegrity::analyze(const Event& iEvent, const EventSetup& c) {
   
   for(unsigned int fed =  0 ; fed<fatalFEDs.size(); fed++){
     if(fatalFEDs[fed]< minFEDNum_  || fatalFEDs[fed]> maxFEDNum_ ) continue;
-
     fedMe_[Fatal] ->Fill(fatalFEDs[fed]);
   }
 	
