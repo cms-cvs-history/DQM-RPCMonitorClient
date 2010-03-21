@@ -26,7 +26,7 @@ RPCFEDIntegrity::RPCFEDIntegrity(const ParameterSet& ps ) {
   LogVerbatim ("rpcfedintegrity") << "[RPCFEDIntegrity]: Constructor";
 
   rawCountsLabel_ = ps.getUntrackedParameter<InputTag>("RPCRawCountsInputTag");
-  prefixDir_ = ps.getUntrackedParameter<string>("RPCPrefixDir", "RPC");
+  prefixDir_ = ps.getUntrackedParameter<string>("RPCPrefixDir", "RPC/FEDIntegrity");
   merge_ = ps.getUntrackedParameter<bool>("MergeRuns", false);
   minFEDNum_ =  ps.getUntrackedParameter<int>("MinimumFEDID", 790);
   maxFEDNum_ =  ps.getUntrackedParameter<int>("MaximumFEDID", 792);
@@ -142,7 +142,7 @@ void RPCFEDIntegrity::endJob(){
 void  RPCFEDIntegrity::bookFEDMe(void){
 
   if(dbe_){
-    dbe_->setCurrentFolder(prefixDir_+"/FEDIntegrity/");
+    dbe_->setCurrentFolder(prefixDir_);
 
     fedMe_[Entries] =  dbe_->book1D("FEDEntries","FED Entries",numOfFED_, minFEDNum_, maxFEDNum_ +1);
     this->labelBins(fedMe_[Entries]);
@@ -178,7 +178,7 @@ void  RPCFEDIntegrity::reset(void){
   if(dbe_){
     for(unsigned int i = 0; i<histoName_.size(); i++){
       me = 0;
-      me = dbe_->get(prefixDir_ +"FEDIntegrity/"+ histoName_[i]);
+      me = dbe_->get(prefixDir_ + histoName_[i]);
       if(0!=me ) me->Reset();
     }
   }
