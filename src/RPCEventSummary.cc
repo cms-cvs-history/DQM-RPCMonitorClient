@@ -18,7 +18,6 @@ using namespace std;
 RPCEventSummary::RPCEventSummary(const ParameterSet& ps ){
   LogVerbatim ("rpceventsummary") << "[RPCEventSummary]: Constructor";
 
-  //  
 
   numberOfDisks_ = ps.getUntrackedParameter<int>("NumberOfEndcapDisks", 3);
 
@@ -28,9 +27,7 @@ RPCEventSummary::RPCEventSummary(const ParameterSet& ps ){
   globalFolder_ = ps.getUntrackedParameter<string>("RPCSummaryFolder", "RPC/RecHits/SummaryHistograms");
   minimumEvents_= ps.getUntrackedParameter<int>("MinimumRPCEvents", 10000);
  
-  tier0_=ps.getUntrackedParameter<bool>("Tier0", false);
-
-
+ 
   FEDRange_.first  = ps.getUntrackedParameter<unsigned int>("MinimumRPCFEDId", 790);
   FEDRange_.second = ps.getUntrackedParameter<unsigned int>("MaximumRPCFEDId", 792);
   
@@ -50,31 +47,9 @@ void RPCEventSummary::beginJob(){
 void RPCEventSummary::beginRun(const Run& r, const EventSetup& c){
  LogVerbatim ("rpceventsummary") << "[RPCEventSummary]: Begin run";
 
- edm::eventsetup::EventSetupRecordKey recordKey(edm::eventsetup::EventSetupRecordKey::TypeTag::findType("RunInfoRcd"));
+ defaultValue_ = this->findRPCFED(c);
 
- defaultValue = 1;
-
-  if(0 != c.find( recordKey ) ) {
-    defaultValue = -1;
-   
-    //get fed summary information
-    ESHandle<RunInfo> sumFED;
-    c.get<RunInfoRcd>().get(sumFED);    
-    vector<int> FedsInIds= sumFED->m_fed_in;   
-    unsigned int f = 0;
-   bool flag = false;
-    while(!flag && f < FedsInIds.size()) {
-      int fedID=FedsInIds[f];
-      //make sure fed id is in allowed range  
-      if(fedID>=FEDRange_.first && fedID<=FEDRange_.second) {
-	defaultValue = 1;
-	flag = true;
-      } 
-      f++;
-    }   
-  }   
-
-
+ event_=0;
  init_=false;
 
  MonitorElement* me;
@@ -90,7 +65,7 @@ void RPCEventSummary::beginRun(const Run& r, const EventSetup& c){
   }
 
   me = dbe_->bookFloat(histoName);
-  me->Fill(defaultValue);
+  me->Fill(defaultValue_);
 
   //TH2F ME providing a mapof values[0-1] to show if problems are localized or distributed
   me =0;
@@ -123,14 +98,12 @@ void RPCEventSummary::beginRun(const Run& r, const EventSetup& c){
     me->setBinLabel((-d+5),BinLabel.str(),1);
   }
 
-
-  //fill the histo with "1" --- just for the moment
   for(int i=1; i<=15; i++){
      for (int j=1; j<=12; j++ ){
        if(i==5 || i==11 || (j>6 && (i<6 || i>10)))    
 	 me->setBinContent(i,j,-1);//bins that not correspond to subdetector parts
        else
-	 me->setBinContent(i,j,defaultValue);
+	 me->setBinContent(i,j,defaultValue_);
      }
    }
 
@@ -171,14 +144,29 @@ void RPCEventSummary::beginRun(const Run& r, const EventSetup& c){
       dbe_->removeElement(me->getName());
     }
     me = dbe_->bookFloat(segmentNames[i]);
-    me->Fill(defaultValue);
+    me->Fill(defaultValue_);
   }
 
 }
 
 void RPCEventSummary::beginLuminosityBlock(LuminosityBlock const& lumiSeg, EventSetup const& context){} 
 
-void RPCEventSummary::analyze(const Event& iEvent, const EventSetup& c) {}
+void RPCEventSummary::analyze(const Event& iEvent, const EventSetup& c) {
+
+  event_ ++;
+ 
+  //  if(event_ > 10 ) return; //check for RPC FEDs 
+                           //only at the first event
+
+  float newDefaultValue = this->findRPCFED(c);
+
+  if ( defaultValue_ == newDefaultValue) return;
+  else 
+    defaultValue_ = newDefaultValue;
+  this->fillWithDefaultValue( defaultValue_ ); 
+
+}
+
 
 void RPCEventSummary::endLuminosityBlock(LuminosityBlock const& lumiSeg, EventSetup const& iSetup) {  
   LogVerbatim ("rpceventsummary") <<"[RPCEventSummary]: End of LS transition, performing DQM client operation";
@@ -187,7 +175,7 @@ void RPCEventSummary::endLuminosityBlock(LuminosityBlock const& lumiSeg, EventSe
   MonitorElement * RPCEvents = dbe_->get(globalFolder_ +"/RPCEvents");  
   float   rpcevents = RPCEvents -> getEntries();
 
-  if( defaultValue == -1) return;
+  if( defaultValue_ == -1) return;
    if(!init_ && rpcevents < minimumEvents_) return;
    else if(!init_) {
      init_=true;
@@ -265,3 +253,84 @@ void RPCEventSummary::endLuminosityBlock(LuminosityBlock const& lumiSeg, EventSe
    
    
 }
+
+void  RPCEventSummary::fillWithDefaultValue(float value){
+
+  MonitorElement  * me;
+
+  //Fill report summary
+  me =0;
+  me = dbe_->get(eventInfoPath_ +"/reportSummary");
+  if (me != 0 )  me->Fill(value);
+  
+  //Fill report summary map
+  me =0;
+  me = dbe_->get(eventInfoPath_ +"/reportSummaryMap");
+  me = dbe_->book2D("reportSummaryMap", "RPC Report Summary Map", 15, -7.5, 7.5, 12, 0.5 ,12.5);
+
+  if(me != 0){
+    for (int x  = 1; x <= 15 ; x++){
+      for(int y = 1; y <= 12 ; y++){
+	if(x==5 || x==11 || (y>6 && (x<6 || x>10)))    
+	  me->setBinContent(x,y,-1);//bins that not correspond to subdetector parts
+	else
+	  me->setBinContent(x, y, value);
+      }
+    }
+  }
+  
+  stringstream segName;
+  vector<string> segmentNames;
+  for(int i=-2; i<=2; i++){//Wheels
+    segName.str("");
+    segName<<"RPC_Wheel"<<i;
+    segmentNames.push_back(segName.str());
+  }
+  
+  for(int i=1; i<=numberOfDisks_; i++){//Disks
+    segName.str("");
+    segName<<"RPC_Disk"<<i;
+    segmentNames.push_back(segName.str());
+    segName.str("");
+    segName<<"RPC_Disk"<<-i;
+    segmentNames.push_back(segName.str());
+  }
+  
+  
+  for(unsigned int i=0; i<segmentNames.size(); i++){
+    me = 0;
+    me = dbe_->get(eventInfoPath_ + "/reportSummaryContents/" +segmentNames[i]);
+    if(me != 0) me->Fill(value);
+  }
+}
+
+
+//Check FED list in RunInfo for RPCs.
+float RPCEventSummary::findRPCFED(const EventSetup& c){
+
+  edm::eventsetup::EventSetupRecordKey recordKey(edm::eventsetup::EventSetupRecordKey::TypeTag::findType("RunInfoRcd"));
+  
+  defaultValue_ = 1;
+  
+  if(0 != c.find( recordKey ) ) {
+    defaultValue_ = -1;
+    
+    //get fed summary information
+    ESHandle<RunInfo> sumFED;
+    c.get<RunInfoRcd>().get(sumFED);    
+    vector<int> FedsInIds= sumFED->m_fed_in;   
+    unsigned int f = 0;
+    bool flag = false;
+    while(!flag && f < FedsInIds.size()) {
+      int fedID=FedsInIds[f];
+      //make sure fed id is in allowed range  
+      if(fedID>=FEDRange_.first && fedID<=FEDRange_.second) {
+	defaultValue_ = 1;
+	flag = true;
+      } 
+      f++;
+    }   
+  }   
+
+  return defaultValue_;
+}  

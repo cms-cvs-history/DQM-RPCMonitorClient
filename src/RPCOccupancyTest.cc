@@ -1,4 +1,3 @@
-/*  \author Anna Cimmino*/
 #include <cmath>
 #include <sstream>
 #include <DQM/RPCMonitorClient/interface/RPCOccupancyTest.h>
@@ -263,8 +262,7 @@ void RPCOccupancyTest::fillGlobalME(RPCDetId & detId, MonitorElement * myMe){
     MonitorElement * AsyMeD=NULL; 
     MonitorElement * NormOccup=NULL;
     MonitorElement * NormOccupD=NULL;
-      
- 
+       
     if(detId.region() ==0){
       AsyMe= AsyMeWheel[detId.ring()+2];
       AsyMeD= AsyMeDWheel[detId.ring()+2];
@@ -315,21 +313,22 @@ void RPCOccupancyTest::fillGlobalME(RPCDetId & detId, MonitorElement * myMe){
       else  BOccupancy+=myMe->getBinContent(strip);
     }
 	    
-    float asym =  fabs((FOccupancy - BOccupancy )/totEnt);
+
+    float asym = 0;
+    if(totEnt != 0 ) asym =  fabs((FOccupancy - BOccupancy )/totEnt);
     
     if(AsyMe)  AsyMe->setBinContent(xBin,yBin,asym );
 
     if(AsyMeD) AsyMeD->Fill(asym);
 	
     float normoccup = 0;
-    if(stripInRoll*rpcevents_ !=0)
-      normoccup = totEnt/(stripInRoll*rpcevents_)*10;
+    if(rpcevents_ !=0)
+      normoccup = (totEnt/rpcevents_);
     if(NormOccup)  NormOccup->setBinContent(xBin,yBin, normoccup);
     if(NormOccupD) NormOccupD->Fill(normoccup);
 
     //cout<<detId.region()<<endl;
     
-   
     
     if(detId.region()==0) {
       if(detId.station()==1 )Barrel_OccBySt -> Fill(1, normoccup);

@@ -6,8 +6,8 @@
  * *
  *  DQM Event Summary module for RPCs
  *
- *  $Date: 2009/11/20 10:19:05 $
- *  $Revision: 1.13.2.1 $
+ *  $Date: 2010/02/05 14:34:53 $
+ *  $Revision: 1.13.2.1.4.1 $
  *  \author Anna Cimmino
  *   
  */
@@ -57,17 +57,20 @@ public:
   
  private:
   
+  void fillWithDefaultValue(float );
+  float findRPCFED(const edm::EventSetup& );
+
   std::string eventInfoPath_, prefixDir_;
 
-  bool tier0_;  
   bool enableReportSummary_;
   int prescaleFactor_, minimumEvents_;
   bool init_;
   DQMStore* dbe_;
- 
+  int event_;
+
   int nLumiSegs_;
   std::string globalFolder_;
-  int defaultValue;
+  float defaultValue_;
 
   std::pair<int, int> FEDRange_;
   int numberOfDisks_;  
