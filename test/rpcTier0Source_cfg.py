@@ -286,7 +286,7 @@ process.load("CondCore.DBCommon.CondDBSetup_cfi")
 
 
 ################# RPC Unpacker  ######################
-process.rpcunpacker = cms.EDProducer("RPCUnpackingModule",
+process.rpcunpacker = cms.EDFilter("RPCUnpackingModule",
     InputLabel = cms.untracked.InputTag("source"),
     doSynchro = cms.bool(False)
 )
