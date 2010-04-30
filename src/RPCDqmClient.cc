@@ -85,6 +85,7 @@ void  RPCDqmClient::beginRun(const Run& r, const EventSetup& c){
  
   dbe_->setCurrentFolder(prefixDir_);
 
+
  
   //loop on all geometry and get all histos
   for (TrackingGeometry::DetContainer::const_iterator it=rpcGeo->dets().begin();it<rpcGeo->dets().end();it++){
@@ -97,12 +98,14 @@ void  RPCDqmClient::beginRun(const Run& r, const EventSetup& c){
 	RPCDetId detId = (*r)->id();
 	
 	//Get Occupancy ME for roll
-	RPCGeomServ RPCname(detId);	   
+	RPCGeomServ RPCname(detId);
+	RPCBookFolderStructure *  folderStr = new RPCBookFolderStructure();
 
+ 
 	//loop on clients
 	for( unsigned int cl = 0; cl<clientModules_.size(); cl++ ){
 
- 	  MonitorElement * myMe = dbe_->get(prefixDir_+"/"+  RPCBookFolderStructure::folderStructure(detId)+"/"+clientHisto_[cl]+ "_"+RPCname.name()); 
+ 	  MonitorElement * myMe = dbe_->get(prefixDir_+"/"+folderStr->folderStructure(detId)+"/"+clientHisto_[cl]+ "_"+RPCname.name()); 
 
 	  if (!myMe || find(myMeVect.begin(), myMeVect.end(), myMe)!=myMeVect.end())continue;
 
@@ -190,7 +193,7 @@ void RPCDqmClient::makeClientMap() {
   //Fill vectors with all possible RPC DQM clients , source histos names, and tag values
   //RPCMultiplicityTest
   clientNames.push_back("RPCMultiplicityTest");
-  clientHisto.push_back("NumberOfDigi");
+  clientHisto.push_back("Multiplicity");
   clientTag.push_back(rpcdqm::MULTIPLICITY);
   clientModules.push_back( new RPCMultiplicityTest(parameters_));
   //RPCDeadChannelTest
