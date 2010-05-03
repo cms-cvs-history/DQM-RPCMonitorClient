@@ -9,7 +9,7 @@ rpcdigidqm.DigiDQMSaveRootFile = False
 
 
 #Efficiency
- #from DQM.RPCMonitorDigi.RPCEfficiency_cfi import *
+from DQM.RPCMonitorDigi.RPCEfficiency_cfi import *
 
 # FED integrity
 from DQM.RPCMonitorClient.RPCFEDIntegrity_cfi import rpcFEDIntegrity
