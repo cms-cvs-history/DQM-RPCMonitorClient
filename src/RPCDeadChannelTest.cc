@@ -118,12 +118,6 @@ void RPCDeadChannelTest::analyze(const edm::Event& iEvent, const edm::EventSetup
 void RPCDeadChannelTest::endLuminosityBlock(LuminosityBlock const& lumiSeg, EventSetup const& iSetup) {
  
   edm::LogVerbatim ("deadChannel") <<"[RPCDeadChannelTest]: End of LS transition, performing the DQM client operation";
-  
-  // counts number of lumiSegs 
-  int nLumiSegs = lumiSeg.id().luminosityBlock();
-
-  //check some statements and prescale Factor
-  if(nLumiSegs%prescaleFactor_ != 0) return;
 
     //Loop on chambers
     for (unsigned int  i = 0 ; i<myOccupancyMe_.size();i++){

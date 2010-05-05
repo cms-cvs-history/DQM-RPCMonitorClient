@@ -1,9 +1,3 @@
-/**************************************
- *         Autor: David Lomidze       *
- *           INFN di Napoli           *
- *           06 March 2009            *
- *************************************/
-
 #include <DQM/RPCMonitorClient/interface/RPCNoisyStripTest.h>
 #include "DQM/RPCMonitorDigi/interface/utils.h"
 
@@ -151,11 +145,6 @@ void RPCNoisyStripTest::analyze(const Event& iEvent, const EventSetup& c) {}
 
 void RPCNoisyStripTest::endLuminosityBlock(LuminosityBlock const& lumiSeg, EventSetup const& iSetup) {  
 
-  // counts number of lumiSegs 
-  int  nLumiSegs = lumiSeg.id().luminosityBlock();
-  //check some statements and prescale Factor
-  if(nLumiSegs%prescaleFactor_ != 0)  return;
- 
   LogVerbatim ("rpcnoisetest") <<"[RPCNoisyStripTest]: End of LS transition, performing DQM client operation";
   
   //Clear Distributions

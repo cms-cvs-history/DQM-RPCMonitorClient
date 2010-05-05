@@ -83,9 +83,11 @@ void  RPCDqmClient::beginRun(const Run& r, const EventSetup& c){
   ESHandle<RPCGeometry> rpcGeo;
   c.get<MuonGeometryRecord>().get(rpcGeo);
  
+
+  numLumBlock_ = prescaleGlobalFactor_ ;
+
   dbe_->setCurrentFolder(prefixDir_);
 
- 
   //loop on all geometry and get all histos
   for (TrackingGeometry::DetContainer::const_iterator it=rpcGeo->dets().begin();it<rpcGeo->dets().end();it++){
     if( dynamic_cast< RPCChamber* >( *it ) != 0 ){
@@ -97,12 +99,14 @@ void  RPCDqmClient::beginRun(const Run& r, const EventSetup& c){
 	RPCDetId detId = (*r)->id();
 	
 	//Get Occupancy ME for roll
-	RPCGeomServ RPCname(detId);	   
+	RPCGeomServ RPCname(detId);
+	RPCBookFolderStructure *  folderStr = new RPCBookFolderStructure();
 
+ 
 	//loop on clients
 	for( unsigned int cl = 0; cl<clientModules_.size(); cl++ ){
 
- 	  MonitorElement * myMe = dbe_->get(prefixDir_+"/"+  RPCBookFolderStructure::folderStructure(detId)+"/"+clientHisto_[cl]+ "_"+RPCname.name()); 
+ 	  MonitorElement * myMe = dbe_->get(prefixDir_+"/"+folderStr->folderStructure(detId)+"/"+clientHisto_[cl]+ "_"+RPCname.name()); 
 
 	  if (!myMe || find(myMeVect.begin(), myMeVect.end(), myMe)!=myMeVect.end())continue;
 
@@ -138,22 +142,24 @@ void RPCDqmClient::analyze(const Event& iEvent, const EventSetup& iSetup)
 
 void RPCDqmClient::endLuminosityBlock(edm::LuminosityBlock const& lumiSeg, edm::EventSetup const& c){
 
+  if (!enableDQMClients_ )  return;
+
   edm::LogVerbatim ("rpcdqmclient") <<"[RPCDqmClient]: End of LS ";
  
   MonitorElement * RPCEvents = dbe_->get(globalFolder_ +"/RPCEvents");  
   float   rpcevents = RPCEvents -> getEntries();
   
-  if(!init_ && rpcevents < minimumEvents_) return;
-  else if(!init_) {
-    init_=true;
-    numLumBlock_ = prescaleGlobalFactor_;
-  }else numLumBlock_++;
-   
-  if (!enableDQMClients_ || numLumBlock_ % prescaleGlobalFactor_ != 0 ) return;
-  
-  
+  if(rpcevents < minimumEvents_) return;
+
+  if (numLumBlock_ % prescaleGlobalFactor_ != 0 ){
+    numLumBlock_++;
+    return;
+  }
+
   for (vector<RPCClient*>::iterator it = clientModules_.begin(); it!=clientModules_.end(); it++ )
     (*it)->endLuminosityBlock( lumiSeg, c);
+
+  numLumBlock_++;
 }
 
 
@@ -190,7 +196,7 @@ void RPCDqmClient::makeClientMap() {
   //Fill vectors with all possible RPC DQM clients , source histos names, and tag values
   //RPCMultiplicityTest
   clientNames.push_back("RPCMultiplicityTest");
-  clientHisto.push_back("NumberOfDigi");
+  clientHisto.push_back("Multiplicity");
   clientTag.push_back(rpcdqm::MULTIPLICITY);
   clientModules.push_back( new RPCMultiplicityTest(parameters_));
   //RPCDeadChannelTest

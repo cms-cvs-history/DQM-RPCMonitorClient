@@ -58,7 +58,7 @@ public:
   int FATAL_LIMIT;
 
   enum fedHisto{Entries, Fatal, NonFatal};
-
+  edm::InputTag rawCountsLabel_;
 
 
   std::map< std::pair<int,int>, int > readoutErrors_;

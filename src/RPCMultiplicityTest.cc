@@ -135,8 +135,6 @@ void RPCMultiplicityTest::beginLuminosityBlock(LuminosityBlock const& lumiSeg, E
 void RPCMultiplicityTest::analyze(const edm::Event& iEvent, const edm::EventSetup& c){}
 
 void RPCMultiplicityTest::endLuminosityBlock(LuminosityBlock const& lumiSeg, EventSetup const& iSetup) {
- // counts number of lumiSegs 
-  if(lumiSeg.id().luminosityBlock()%prescaleFactor_ != 0) return; 
 
   edm::LogVerbatim ("multiplicity") <<"[RPCMultiplicityTest]: End of LS transition, performing the DQM client operation";
 

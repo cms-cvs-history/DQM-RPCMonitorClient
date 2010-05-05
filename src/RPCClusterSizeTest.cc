@@ -167,10 +167,7 @@ void RPCClusterSizeTest::analyze(const Event& iEvent, const EventSetup& c) {}
 
 void RPCClusterSizeTest::endLuminosityBlock(LuminosityBlock const& lumiSeg, EventSetup const& iSetup) {  
   LogVerbatim ("rpceventsummary") <<"[RPCClusterSizeTest]: End of LS transition, performing DQM client operation";
-  
-  //check some statements and prescale Factor
-  if(lumiSeg.id().luminosityBlock()%prescaleFactor_ != 0 || myClusterMe_.size()==0 || myDetIds_.size()==0)return;
-        
+ 
   MonitorElement * CLS =NULL;          // ClusterSize in 1 bin, Roll vs Sector
   MonitorElement * CLSD =NULL;         // ClusterSize in 1 bin, Distribution
   MonitorElement * MEAN =NULL;         // Mean ClusterSize, Roll vs Sector
@@ -182,8 +179,8 @@ void RPCClusterSizeTest::endLuminosityBlock(LuminosityBlock const& lumiSeg, Even
   MonitorElement * myMe;
 
   //clear
-
- //Clear Distributions
+  
+  //Clear Distributions
   int limit = numberOfDisks_ * 2;
   if(numberOfDisks_<2) limit = 5;
   for(int i =0 ; i<limit; i++){
@@ -201,14 +198,14 @@ void RPCClusterSizeTest::endLuminosityBlock(LuminosityBlock const& lumiSeg, Even
   for (unsigned int  i = 0 ; i<myClusterMe_.size();i++){
 
     myMe = myClusterMe_[i];
-    if (!myMe)continue;
 
+    if (!myMe || myMe->getEntries() ==0 )continue;
     
     detId=myDetIds_[i];
     
     
     if (detId.region()==0){
-
+      
       CLS=CLSWheel[detId.ring()+2];
       CLSD=CLSDWheel[detId.ring()+2];
       MEAN= MEANWheel[detId.ring()+2];
@@ -230,6 +227,7 @@ void RPCClusterSizeTest::endLuminosityBlock(LuminosityBlock const& lumiSeg, Even
         }
       }
     }
+
     int xBin,yBin;
 
     if (detId.region()==0){//Barrel
@@ -245,18 +243,20 @@ void RPCClusterSizeTest::endLuminosityBlock(LuminosityBlock const& lumiSeg, Even
       (numberOfRings_ == 3 ? yBin= detId.ring()*3-detId.roll()+1 : yBin= (detId.ring()-1)*3-detId.roll()+1);
     }
 
-  // Normalization -> # of Entries in first Bin normalaized by total Entries
-    float NormCLS = myMe->getBinContent(1)/myMe->getEntries();
-    float meanCLS = myMe->getMean();
+    // Normalization -> # of Entries in first Bin normalaized by total Entries
+
+      float NormCLS = myMe->getBinContent(1)/myMe->getEntries();
+      float meanCLS = myMe->getMean();
       
-    if (CLS)  CLS -> setBinContent(xBin,yBin, NormCLS);
-    if(MEAN)   MEAN -> setBinContent(xBin, yBin, meanCLS);
-  
-    if(MEAND) MEAND->Fill(meanCLS);
-    if(CLSD)   CLSD->Fill(NormCLS);
+      if (CLS)  CLS -> setBinContent(xBin,yBin, NormCLS);
+      if(MEAN)   MEAN -> setBinContent(xBin, yBin, meanCLS);
+    
+      if(MEAND) MEAND->Fill(meanCLS);
+      if(CLSD)   CLSD->Fill(NormCLS);
+
   }//End loop on chambers
 }
- 
+
 
 void  RPCClusterSizeTest::endJob(void) {}
 void  RPCClusterSizeTest::endRun(const Run& r, const EventSetup& c) {}
