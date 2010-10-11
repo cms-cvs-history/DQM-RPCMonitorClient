@@ -30,8 +30,8 @@ RPCDataCertification::~RPCDataCertification() {}
 
 void RPCDataCertification::beginJob(){}
 
+void RPCDataCertification::beginRun(const edm::Run& r, const edm::EventSetup& setup) {
 
-  void RPCDataCertification::beginRun(const edm::Run& r, const edm::EventSetup& setup){
  edm::eventsetup::EventSetupRecordKey recordKey(edm::eventsetup::EventSetupRecordKey::TypeTag::findType("RunInfoRcd"));
 
  int defaultValue = 1;

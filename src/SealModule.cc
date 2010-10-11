@@ -16,9 +16,6 @@ DEFINE_FWK_MODULE(RPCMonitorRaw);
 #include <DQM/RPCMonitorClient/interface/RPCMonitorLinkSynchro.h>
 DEFINE_FWK_MODULE(RPCMonitorLinkSynchro);
 
-#include <DQM/RPCMonitorClient/interface/RPCMonitorLinkSynchroMerger.h>
-DEFINE_ANOTHER_FWK_MODULE(RPCMonitorLinkSynchroMerger);
-
 #include <DQM/RPCMonitorClient/interface/RPCDaqInfo.h>
 DEFINE_FWK_MODULE(RPCDaqInfo);
 
@@ -36,12 +33,8 @@ DEFINE_FWK_MODULE(ReadMeFromFile);
 #include <DQM/RPCMonitorClient/interface/RPCDqmClient.h>
 DEFINE_FWK_MODULE(RPCDqmClient);
 
-
 #include <DQM/RPCMonitorClient/interface/RPCChamberQuality.h>
 DEFINE_FWK_MODULE(RPCChamberQuality);
 
-
-#include <DQM/RPCMonitorClient/interface/RPCEfficiencySecond.h>
-DEFINE_FWK_MODULE(RPCEfficiencySecond);
 
 

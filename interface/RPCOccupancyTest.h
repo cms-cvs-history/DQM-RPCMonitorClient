@@ -10,8 +10,6 @@
 #include <vector>
 
 
-
-
 class RPCOccupancyTest:public RPCClient {
 public:
 
@@ -19,19 +17,16 @@ public:
   virtual ~RPCOccupancyTest();
 
   void beginJob(DQMStore *);
-  void endRun(const edm::Run& , const edm::EventSetup& , std::vector<MonitorElement *> , std::vector<RPCDetId>); 
+  void beginRun(const edm::Run& , const edm::EventSetup& , std::vector<MonitorElement *> , std::vector<RPCDetId>); 
   void beginLuminosityBlock(edm::LuminosityBlock const& lumiSeg, edm::EventSetup const& context) ;
   void analyze(const edm::Event& iEvent, const edm::EventSetup& c);
   void endLuminosityBlock(edm::LuminosityBlock const& lumiSeg, edm::EventSetup const& c);
-  void beginRun(const edm::Run& , const edm::EventSetup& ); 		
+ void endRun(const edm::Run& , const edm::EventSetup& ); 		
   void endJob();
-  virtual void clientOperation(edm::EventSetup const& c);
-
  protected:
   // void OccupancyDist();
   void fillGlobalME(RPCDetId & , MonitorElement *);
- 
-private:
+ private:
   
   std::string globalFolder_;
 
@@ -59,7 +54,6 @@ private:
   MonitorElement * Barrel_OccBySt;
   MonitorElement * EndCap_OccByRng;
   MonitorElement * EndCap_OccByDisk ;
-
 };
 
 #endif
