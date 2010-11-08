@@ -3,6 +3,7 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "FWCore/Framework/interface/ESHandle.h"
 #include "FWCore/Framework/interface/EventSetup.h"
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
 
 #include "DQMServices/Core/interface/DQMStore.h"
 #include "DQMServices/Core/interface/MonitorElement.h"
@@ -26,12 +27,13 @@ RPCDCSSummary::RPCDCSSummary(const ParameterSet& ps) {
 
 RPCDCSSummary::~RPCDCSSummary() {}
 
+
 void RPCDCSSummary::beginJob() {}
 
-void RPCDCSSummary::beginRun(const edm::Run& r, const edm::EventSetup& setup){
+void RPCDCSSummary::beginRun(const edm::Run& r, const edm::EventSetup& setup) {
  edm::eventsetup::EventSetupRecordKey recordKey(edm::eventsetup::EventSetupRecordKey::TypeTag::findType("RunInfoRcd"));
 
- int defaultValue = 1;
+ defaultValue = 1;
 
  if(0 != setup.find( recordKey ) ) {
     defaultValue = -1;
