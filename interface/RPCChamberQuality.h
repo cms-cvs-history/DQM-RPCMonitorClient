@@ -28,7 +28,7 @@ public:
   void beginLuminosityBlock(edm::LuminosityBlock const& lumiSeg, edm::EventSetup const& context) ;
   void analyze(const edm::Event& iEvent, const edm::EventSetup& c);
   void endLuminosityBlock(edm::LuminosityBlock const& lumiSeg, edm::EventSetup const& c);
-  void endRun(const edm::Run& r, const edm::EventSetup& c);
+  void endJob(void);
   
  private:
 
@@ -45,7 +45,7 @@ public:
   int prescaleFactor_;
   int numberOfDisks_;
 
-  //  bool init_;
+  bool init_;
   DQMStore* dbe_;
 
   int minEvents;

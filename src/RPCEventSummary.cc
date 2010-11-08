@@ -9,6 +9,7 @@
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
 #include <FWCore/Framework/interface/LuminosityBlock.h>
 #include <FWCore/Framework/interface/Event.h>
+#include <FWCore/Framework/interface/EventSetup.h>
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 //DQM Services
 #include "DQMServices/Core/interface/DQMStore.h"
@@ -310,7 +311,7 @@ void  RPCEventSummary::fillWithDefaultValue(float value){
 
 
 //Check FED list in RunInfo for RPCs.
-float RPCEventSummary::findRPCFED(const EventSetup& c){
+float RPCEventSummary::findRPCFED(const edm::EventSetup& c){
 
   edm::eventsetup::EventSetupRecordKey recordKey(edm::eventsetup::EventSetupRecordKey::TypeTag::findType("RunInfoRcd"));
   

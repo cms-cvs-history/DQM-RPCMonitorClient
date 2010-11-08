@@ -31,7 +31,7 @@ process.load("RecoLocalMuon.RPCRecHit.rpcRecHits_cfi")
 
 ##### Run as Emptry Source #######
 process.source = cms.Source("EmptySource",
-   firstRun = cms.untracked.uint32(70669)
+   firstRun = cms.untracked.uint32(1)
                             )
 
 process.maxEvents = cms.untracked.PSet(
@@ -44,13 +44,13 @@ process.ModuleWebRegistry = cms.Service("ModuleWebRegistry")
 ################# DQM Client Modules ######################
 process.load("DQM.RPCMonitorClient.RPCEventSummary_cfi")
 process.rpcEventSummary.EventInfoPath = 'RPC/EventInfo'
-process.rpcEventSummary.RPCPrefixDir = 'RPC/RecHits'
-process.rpcEventSummary.RPCPrefixDir = 'RPC/RecHits'
+#process.rpcEventSummary.RPCPrefixDir = 'RPC/RecHits'
+#process.rpcEventSummary.RPCPrefixDir = 'RPC/RecHits'
 process.rpcEventSummary.PrescaleFactor = 1
 process.load("DQM.RPCMonitorClient.RPCMon_SS_Dbx_Global_cfi")
 
 ################# Quality Tests ############################
-process.qTesterRPC = cms.EDAnalyzer("QualityTester",
+process.qTesterRPC = cms.EDFilter("QualityTester",
     qtList = cms.untracked.FileInPath('DQM/RPCMonitorClient/test/RPCQualityTests.xml'),
     prescaleFactor = cms.untracked.int32(1)
 )
@@ -58,27 +58,48 @@ process.qTesterRPC = cms.EDAnalyzer("QualityTester",
 
 ################# Open Root file and provide MEs ############
 process.ReadMeFromFile = cms.EDAnalyzer("ReadMeFromFile",
-#InputFile = cms.untracked.string('/afs/cern.ch/user/d/dlomidze/scratch0/CMSSW_3_0_0_pre3/src/DQM/RPCMonitorClient/python/DQM_V0001_RPC_R000069800.root')
-InputFile = cms.untracked.string('rfio:/castor/cern.ch/user/d/dlomidze/RPC/GlobalRuns/CosmicsCommissioning08-PromptReco-v2RECO/70664/root/Merge_tot.root')
-#InputFile = cms.untracked.string('rfio:/castor/cern.ch/user/d/dlomidze/DQM_150.000_RPCEvents.root')                                       
-#InputFile = cms.untracked.string('file:/afs/cern.ch/user/d/dlomidze/scratch0/DQM_Merged_V3_R70664.root')
+InputFile = cms.untracked.string('/afs/cern.ch/user/d/dlomidze/scratch0/DQM_ROOT_FILES/DQM_test.root')
+#InputFile = cms.untracked.string('rfio:/castor/cern.ch/user/d/dlomidze/RPC/GlobalRuns/CosmicsCommissioning08-PromptReco-v2RECO/70664/root/Merge_tot.root')
+#InputFile = cms.untracked.string('rfio:/castor/cern.ch/user/d/dlomidze/merged_dogo_R109606.root')                                       
+#InputFile = cms.untracked.string('file:/afs/cern.ch/user/d/dlomidze/scratch0/test_2.root')
 #InputFile = cms.untracked.string('file:/afs/cern.ch/user/d/dlomidze/scratch0/CMSSW_3_1_0_pre2/src/DQM/RPCMonitorDigi/python/DQM_500.000_RPCEvents.root')
 )
 
 
-################# RPC Client Modules #######################
-process.RPCDeadChannelTest = cms.EDAnalyzer("RPCDeadChannelTest")
-process.RPCOccupancyTest = cms.EDAnalyzer("RPCOccupancyTest")
-process.RPCClusterSizeTest = cms.EDAnalyzer("RPCClusterSizeTest")
-process.RPCChamberQuality = cms.EDAnalyzer("RPCChamberQuality")
-#process.RPCDCSDataSimulator = cms.EDAnalyzer("RPCDCSDataSimulator")
-process.RPCMultiplicityTest = cms.EDAnalyzer("RPCMultiplicityTest")
-process.RPCOccupancyChipTest = cms.EDAnalyzer("RPCOccupancyChipTest");
-process.RPCNoisyStripTest = cms.EDAnalyzer("RPCNoisyStripTest");
 
-#process.p = cms.Path(process.ReadMeFromFile*process.qTesterRPC*process.RPCClusterSizeTest*process.RPCDeadChannelTest*process.RPCOccupancyTest*process.RPCDCSDataSimulator*process.RPCMultiplicityTest*process.RPCChamberQuality*process.dqmSaver)
+################# DQM Client Modules ####################
+process.load("DQM.RPCMonitorClient.RPCDqmClient_cfi")
+process.rpcdqmclient.RPCDqmClientList = cms.untracked.vstring("RPCNoisyStripTest","RPCOccupancyTest","RPCClusterSizeTest","RPCDeadChannelTest","RPCMultiplicityTest")
+process.rpcdqmclient.DiagnosticPrescale = cms.untracked.int32(1)
+process.rpcdqmclient.MinimumRPCEvents = cms.untracked.int32(10)
 
-process.p = cms.Path(process.ReadMeFromFile*process.qTesterRPC*process.RPCClusterSizeTest*process.RPCDeadChannelTest*process.RPCOccupancyTest*process.RPCMultiplicityTest*process.RPCOccupancyChipTest*process.RPCNoisyStripTest*process.RPCChamberQuality*process.dqmSaver)
+
+################# RPC Event Summary Module ####################
+process.load("DQM.RPCMonitorClient.RPCEventSummary_cfi")
+process.rpcEventSummary.EventInfoPath = 'RPC/EventInfo'
+process.rpcEventSummary.PrescaleFactor = 1
+
+################# Quality Tests #########################
+process.qTesterRPC = cms.EDFilter("QualityTester",
+    qtList = cms.untracked.FileInPath('DQM/RPCMonitorClient/test/RPCQualityTests.xml'),
+    prescaleFactor = cms.untracked.int32(1)
+)
+
+###################### Chamber Quality ##################
+process.rpcChamberQuality = cms.EDAnalyzer("RPCChamberQuality",
+                                           MinimumRPCEvents = cms.untracked.int32(10000),
+                                           PrescaleFactor = cms.untracked.int32(1) 
+                                           )
+
+########## Chamber Quality ##################
+process.rpcChamberQuality = cms.EDAnalyzer("RPCChamberQuality",
+                                           MinimumRPCEvents = cms.untracked.int32(10000),
+                                           PrescaleFactor = cms.untracked.int32(1) 
+                                           )
+
+
+
+process.p = cms.Path(process.ReadMeFromFile*process.qTesterRPC*process.rpcdqmclient*process.rpcChamberQuality*process.dqmSaver)
 
 
 
