@@ -23,18 +23,21 @@ protected:
   
 private:
   virtual void beginJob();
-  void beginRun(const edm::Run& , const edm::EventSetup& );
+  virtual void beginRun(const edm::Run& r, const edm::EventSetup& c);
   virtual void beginLuminosityBlock(const edm::LuminosityBlock& lumi, const  edm::EventSetup& setup);
   virtual void analyze(const edm::Event& event, const edm::EventSetup& setup);
   virtual void endLuminosityBlock(const edm::LuminosityBlock& lumi, const  edm::EventSetup& setup);
   virtual void endJob() ;
+
+  int defaultValue;
+
   
   DQMStore *theDbe;  
   MonitorElement*    DCSMap_;
   MonitorElement*  totalDCSFraction;
   MonitorElement* dcsWheelFractions[5];
   MonitorElement* dcsDiskFractions[10];
-  std::pair<int, int> FEDRange_;
+ std::pair<int, int> FEDRange_;
   int numberOfDisks_;  
   int NumberOfFeds_;
 

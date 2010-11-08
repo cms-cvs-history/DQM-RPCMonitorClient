@@ -45,7 +45,7 @@ void RPCChamberQuality::beginJob(){
 void RPCChamberQuality::beginRun(const Run& r, const EventSetup& c){
   LogVerbatim ("rpceventsummary") << "[RPCChamberQuality]: Begin run";
   
-  // init_ = false;  
+  init_ = false;  
   
   MonitorElement* me;
   dbe_->setCurrentFolder(prefixDir_);
@@ -126,12 +126,13 @@ void RPCChamberQuality::beginLuminosityBlock(LuminosityBlock const& lumiSeg, Eve
 
 void RPCChamberQuality::analyze(const Event& iEvent, const EventSetup& c) {}
 
-void RPCChamberQuality::endRun(const Run& r, const EventSetup& c){
-  LogVerbatim ("rpceventsummary") <<"[RPCChamberQuality]: End Job, performing DQM client operation";
+void RPCChamberQuality::endLuminosityBlock(LuminosityBlock const& lumiSeg, EventSetup const& iSetup) {  
+  LogVerbatim ("rpceventsummary") <<"[RPCChamberQuality]: End of LS transition, performing DQM client operation";
 
    MonitorElement * RpcEvents = NULL;
    stringstream meName;
-       
+   
+    
    meName.str("");
    meName<<prefixDir_<<"/RPCEvents"; 
    int rpcEvents=0;
@@ -139,7 +140,17 @@ void RPCChamberQuality::endRun(const Run& r, const EventSetup& c){
 
    if(RpcEvents) rpcEvents= (int)RpcEvents->getEntries();
 
-   if(rpcEvents >= minEvents){
+   if(!init_ && rpcEvents < minEvents) return;   
+   else if(!init_) {
+    
+     init_=true;
+
+     numLumBlock_ = prescaleFactor_;
+   }else numLumBlock_++;
+   
+    
+  //check some statements and prescale Factor
+  if(numLumBlock_%prescaleFactor_ == 0) {
     
     MonitorElement * summary[3];
 
@@ -180,17 +191,18 @@ void RPCChamberQuality::endRun(const Run& r, const EventSetup& c){
     if(RpcOverview) {//Fill Overview ME
       for(int r = 0 ; r< 3; r++) {
 	if (summary[r] == 0 ) continue;
-	int entries = summary[r]->getEntries();
+	double entries = summary[r]->getEntries();
 	if(entries == 0) continue;
 	for (int x = 1; x <= 7; x++) {
 	  RpcOverview->setBinContent(x,r+1,(summary[r]->getBinContent(x)/entries));
        } 
       } 
     } //loop by LimiBloks
-   }
+  }
 } 
 
-void RPCChamberQuality::endLuminosityBlock(LuminosityBlock const& lumiSeg, EventSetup const& iSetup) {  }
+
+void RPCChamberQuality::endJob() {}
 
 
 void RPCChamberQuality::performeClientOperation(string MESufix, int region, MonitorElement * quality){
