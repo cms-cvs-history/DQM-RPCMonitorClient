@@ -133,17 +133,18 @@ void RPCDeadChannelTest::clientOperation( edm::EventSetup const& iSetup){
       DEAD = NULL;
 
       float deadFraction = 0.0;
-      
+      int xBins = myMe->getNbinsX();
+      if(xBins == 0) continue;
       const QReport * theOccupancyQReport = myMe->getQReport("DeadChannel_0");  
+
       if(theOccupancyQReport) {
-	float qtresult = theOccupancyQReport->getQTresult();
-	//std::vector<dqm::me_util::Channel> badChannels = theOccupancyQReport->getBadChannels();
-	deadFraction = 1.0 -  qtresult;
-      }else {
-	int xBins = myMe->getNbinsX();
+	//	float qtresult = theOccupancyQReport->getQTresult();
+	std::vector<dqm::me_util::Channel> badChannels = theOccupancyQReport->getBadChannels();
+	deadFraction = (float)badChannels.size()/(float)xBins  ;
+      }else{
 	float emptyBins = 0.0;
-	for (int x = 1; x<= xBins ; x++){if(myMe->getBinContent(x) == 0) {emptyBins++ ;}}
-	if (xBins != 0)	deadFraction = emptyBins/xBins;
+	for (int x = 1; x<= xBins ; x++){if(myMe->getBinContent(x) == 0) {emptyBins = emptyBins + 1.0 ;}}
+	deadFraction = (float)emptyBins/(float)xBins;
       }
 
 
