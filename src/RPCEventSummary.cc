@@ -184,7 +184,14 @@ void RPCEventSummary::endLuminosityBlock(edm::LuminosityBlock const& lumiSeg, ed
 
   if(offlineDQM_) return;
 
-  if(init_ && lumiCounter_%prescaleFactor_ != 0) return;
+  if(!init_ ) {
+    this->clientOperation();
+    return;
+  }
+
+  lumiCounter_++;
+
+  if(lumiCounter_%prescaleFactor_ != 0) return;
 
   this->clientOperation();
 
@@ -208,8 +215,7 @@ void RPCEventSummary::clientOperation(){
   if(rpcevents < minimumEvents_) return;
 
   init_ = true;
-  lumiCounter_++;
-
+ 
   std::stringstream meName;
   MonitorElement * myMe;
    
