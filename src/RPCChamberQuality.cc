@@ -144,11 +144,10 @@ void RPCChamberQuality::fillMonitorElements() {
   int rpcEvents=minEvents;
   RpcEvents = dbe_->get(meName.str());
   
-  if(RpcEvents) rpcEvents= (int)RpcEvents->getIntValue();
+  if(RpcEvents) rpcEvents= (int)RpcEvents->getEntries();
   
   if(rpcEvents >= minEvents){
 
-    lumiCounter_++;
     init_ = true;
     
     MonitorElement * summary[3];
@@ -202,12 +201,19 @@ void RPCChamberQuality::fillMonitorElements() {
 
 void RPCChamberQuality::endLuminosityBlock(edm::LuminosityBlock const& lumiSeg, edm::EventSetup const& iSetup) {  
 
-  if(!  enableDQMClients_ ) return;
+  if(!enableDQMClients_ ) return;
 
   if(offlineDQM_) return;
 
-  if(init_ && (lumiCounter_%prescaleFactor_ != 0) ) return;
+  if(!init_ ) {
+    this->fillMonitorElements();
+    return;
+  }
 
+  lumiCounter_++;
+  
+  if (lumiCounter_%prescaleFactor_ != 0) return;
+  
   this->fillMonitorElements();
   
 
