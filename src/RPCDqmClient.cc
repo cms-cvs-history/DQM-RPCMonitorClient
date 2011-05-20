@@ -96,7 +96,7 @@ void  RPCDqmClient::endRun(const edm::Run& r, const edm::EventSetup& c){
   if(offlineDQM_) this->getMonitorElements(r, c);
 
   float   rpcevents = minimumEvents_;
-  if(RPCEvents_) rpcevents = RPCEvents_ -> getIntValue();
+  if(RPCEvents_) rpcevents = RPCEvents_->getEntries();
   
   if(rpcevents < minimumEvents_) return;
   
@@ -188,20 +188,28 @@ void RPCDqmClient::endLuminosityBlock(edm::LuminosityBlock const& lumiSeg, edm::
     (*it)->endLuminosityBlock( lumiSeg, c);
   
   float   rpcevents = minimumEvents_;
-  if(RPCEvents_) rpcevents = RPCEvents_ -> getIntValue();
+  if(RPCEvents_) rpcevents = RPCEvents_->getEntries();
   
   if( rpcevents < minimumEvents_) return;
 
-  if( init_ &&  (lumiCounter_%prescaleGlobalFactor_ != 0 )) return;
+  if( !init_ ){
 
-  lumiCounter_ ++;
+    for (std::vector<RPCClient*>::iterator it = clientModules_.begin(); it!=clientModules_.end(); it++ ){
+      (*it)->clientOperation(c);
+    }
+    init_ = true;
+    return;
+  }
+
+  lumiCounter_++;
+
+  if (lumiCounter_%prescaleGlobalFactor_ != 0) return;
+
 
   for (std::vector<RPCClient*>::iterator it = clientModules_.begin(); it!=clientModules_.end(); it++ ){
     (*it)->clientOperation(c);
   }
 
-
-  init_ = true;
 }
 
 
